@@ -1,0 +1,175 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Spartan:wght@300;400;500&diqplay=swap%E2%80%9D");
+:root {
+  --primaryColor: hsl(225, 50%, 48%);
+  --secondaryColor: hsl(180, 17%, 95%);
+  --colorOne: hsl(15, 74%, 70%);
+  --colorTwo: hsl(28, 100%, 82%);
+  --hoverColor: hsl(225, 56%, 59%);
+  --whiteColor: hsl(0, 0%, 100%);
+  --BlackColor: hsl(0, 0%, 12%);
+  --textColor: hsl(240, 1%, 48%);
+  --borderColor: hsl(0, 0%, 83%);
+  --whiteColorDeam: hsl(0, 0%, 93%);
+  --greyBg: hsl(0, 0%, 96%);
+  --greyText: rgb(145, 145, 145);
+  --inputColor: hsl(330, 12%, 97%);
+  --boxShadow : box-shadow: rgba(0,0,0,0.1) 0px 10px 15px -3px, rgba(0,0,0,0.05) 0px 4px 6px -2px;
+  --transition: .4s ease-in-out;
+}
+body{
+    background: var(--whiteColor)
+}
+a{
+    text-decoration: none;
+}
+li{
+    list-style: none;
+    cursor: pointer;
+}
+.section{
+    padding: 4rem 0 2rem;
+}
+.container{
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+}
+.icon{
+    font-size: 1.3rem;
+    cursor: pointer;
+}
+.none{
+    display: none;
+}
+.flex{
+    display: flex;
+    align-items: center;
+}
+.grid{
+    display: grid;
+    align-items: center;
+}
+.btn{
+    padding: 1rem 1.7rem;
+    background: var(--primaryColor);
+    border: none;
+    outline: none;
+    border-radius: 3rem;
+    cursor: pointer;
+    color: var(--whiteColor);
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 2.5rem;
+    a{
+        color: var(--whiteColor);
+        font-weight: 500;
+    }
+    &:hover{
+        background: var(--hoverColor);
+    }
+}
+img,video{
+    width: 100%;
+    height: auto;
+}
+input{
+    font-size: 100%;
+    color: var(--greyText);
+}
+p{
+    font-size: 15px;
+    color:var(--greyText);
+    line-height: 25 px;
+}
+h4{
+    padding: 1rem 0;
+    font-weight: 700;
+    font-size: 20px;
+    color: var(--BlackColor);
+}
+h2{
+    font-size: 27px;
+    padding: 1rem 0;
+    color: var(--BlackColor);
+}
+h1{
+    max-width: 600px;
+}
+.mainText{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.home{
+    flex-direction: column;
+    padding-top: 8rem;
+    text-align: center;
+    gap: 2rem;
+        .mainText{
+        color: var(--BlackColor);
+        font-weight: 700;
+        font-size: 25px;
+        line-height: 4rem;
+        width: 60%;
+        }
+        .homeImages{
+            width: 100%;
+            margin: 1rem auto 0;
+            justify-content: center;
+            position: relative;
+            border-radius: 5rem;
+
+                .videoDiv{
+                    width: 60%;
+                    height: 300px;
+
+                    .video{
+                        height: 100%;
+                        width: 100%;
+                        object-fit: cover;
+                        border-radius: 15rem;
+                     }
+                 }
+                 .airplane{
+                    position: absolute;
+                    width: 55%;
+                    top:-25%;
+                 }
+          }
+    
+}
+.navBar{
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+    padding: 1rem 5rem;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    transition: .3s ease-in-out;
+        .logo-div{
+            width: 20%;
+        }
+        .navbar-menu{
+            justify-content: space-between;
+            align-items: center;
+                .menu{
+                    flex-direction: row;
+                    gap: 2rem;
+                    padding-right: 3rem;
+                        .list-items{
+                            padding: 0rem 1rem;
+                            font-size: 15px;
+                            cursor: pointer;
+                            gap: .5rem;
+                            font-weight: 700;
+                            color: var(--textColor);
+                                &:hover{ 
+                                    color: var(--primaryColor);
+                                    font-weight: 700;
+                                }
+                        }
+                }
+        }
+}
