@@ -11,6 +11,7 @@ import { InputText } from "primereact/inputtext";
 import { Calendar } from "primereact/calendar";
 import axios from "axios";
 import { Dropdown } from "primereact/dropdown";
+import { Link } from "react-router-dom";
 
 const Flights = () => {
   let emptyFlight = {
@@ -449,6 +450,11 @@ const Flights = () => {
             style={{ minWidth: "12rem" }}
           ></Column>
         </DataTable>
+        <div className="flex" style={{ justifyContent: "center" }}>
+          <Link to={"/flights"} className="btn">
+            Start Simulation
+          </Link>
+        </div>
       </div>
 
       <Dialog

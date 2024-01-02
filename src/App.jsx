@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Flights from "./Components/Flights/Flights.jsx";
+// import Flights from "./Components/Map";
 import "primereact/resources/themes/lara-light-indigo/theme.css"; // theme
 import "primeflex/primeflex.css"; // css utility
 import "primeicons/primeicons.css";
@@ -13,6 +14,7 @@ const App = () => {
       <Routes>
         <Route path="/home" element={<LandingPage></LandingPage>}></Route>
         <Route path="/flights" element={<Flights></Flights>}></Route>
+        {/* <Route path="/map" element={<Map></Map>}></Route> */}
       </Routes>
     </BrowserRouter>
   );
