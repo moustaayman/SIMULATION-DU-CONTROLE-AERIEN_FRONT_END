@@ -16,7 +16,6 @@ import { FilterMatchMode } from "primereact/api";
 
 const Flights = () => {
   let emptyFlight = {
-    id: null,
     heurDepart: null,
     nameAeroportDepart: null,
     nameAeroportArrive: null,
