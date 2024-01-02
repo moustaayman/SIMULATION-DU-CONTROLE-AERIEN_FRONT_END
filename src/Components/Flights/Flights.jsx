@@ -451,7 +451,7 @@ const Flights = () => {
           ></Column>
         </DataTable>
         <div className="flex" style={{ justifyContent: "center" }}>
-          <Link to={"/flights"} className="btn">
+          <Link to={"/map"} className="btn">
             Start Simulation
           </Link>
         </div>
