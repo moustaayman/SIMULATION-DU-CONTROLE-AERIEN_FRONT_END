@@ -12,9 +12,11 @@ import { Calendar } from "primereact/calendar";
 import axios from "axios";
 import { Dropdown } from "primereact/dropdown";
 import { Link } from "react-router-dom";
+import { FilterMatchMode } from "primereact/api";
 
 const Flights = () => {
   let emptyFlight = {
+    id: null,
     heurDepart: null,
     nameAeroportDepart: null,
     nameAeroportArrive: null,
@@ -24,16 +26,21 @@ const Flights = () => {
   const [flights, setFlights] = useState([]);
   const [airportOptions, setAirportOptions] = useState([]);
   const [airplaneTypeOptions, setAirplaneTypeOptions] = useState([]);
-  const [airplanes, setAirplanes] = useState([]);
   const [flightDialog, setFlightDialog] = useState(false);
   const [deleteFlightDialog, setDeleteFlightDialog] = useState(false);
   const [deleteFlightsDialog, setDeleteFlightsDialog] = useState(false);
   const [flight, setFlight] = useState(emptyFlight);
   const [selectedFlights, setSelectedFlights] = useState(null);
   const [submitted, setSubmitted] = useState(false);
-  const [globalFilter, setGlobalFilter] = useState(null);
   const toast = useRef(null);
   const dt = useRef(null);
+  const [filters, setFilters] = useState({
+    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    heurDepart: { value: null, matchMode: FilterMatchMode.IN },
+    nameAeroportDepart: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    nameAeroportArrive: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    typeAvion: { value: null, matchMode: FilterMatchMode.IN },
+  });
 
   useEffect(() => {
     const fetchFlights = async () => {
@@ -41,27 +48,16 @@ const Flights = () => {
         const response = await axios.get(
           "http://localhost:8080/vols/getAllVol"
         );
-        // console.log(response.data);
         const updatedFlights = response.data.map((flight) => ({
           ...flight,
           nameAeroportDepart: flight.aeroportDepart.name,
           nameAeroportArrive: flight.aeroportArrive.name,
+          typeAvion: flight.avionResponse.typeAvionDto.name,
         }));
 
         setFlights(updatedFlights);
       } catch (error) {
         console.error("Error fetching data:", error);
-      }
-    };
-    const fetchAirplanes = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:8080/avions/getAllAvion"
-        );
-        const airportsName = response.data.map((airport) => airport.name);
-        setAirplanes(airportsName);
-      } catch (error) {
-        console.error("Error fetching airports:", error);
       }
     };
     const fetchAirports = async () => {
@@ -85,7 +81,6 @@ const Flights = () => {
       }
     };
     fetchFlights();
-    fetchAirplanes();
     fetchAirports();
     fetchAirplaneTypes();
   }, []);
@@ -107,7 +102,6 @@ const Flights = () => {
   const hideDeleteFlightsDialog = () => {
     setDeleteFlightsDialog(false);
   };
-
   const saveFlight = async () => {
     setSubmitted(true);
     try {
@@ -327,20 +321,34 @@ const Flights = () => {
       />
     );
   };
+  const onGlobalFilterChange = (e) => {
+    const value = e.target.value;
+    let _filters = { ...filters };
 
-  const header = (
-    <div className="flex flex-wrap gap-2 align-items-center justify-content-between">
-      <h4 className="m-0">Manage Flights</h4>
-      <span className="p-input-icon-left">
-        <i className="pi pi-search" />
-        <InputText
-          type="search"
-          onInput={(e) => setGlobalFilter(e.target.value)}
-          placeholder="Search..."
-        />
-      </span>
-    </div>
-  );
+    _filters["global"].value = value;
+
+    setFilters(_filters);
+  };
+  const renderHeader = () => {
+    const value = filters["global"] ? filters["global"].value : "";
+
+    return (
+      <div className="flex flex-wrap gap-2 align-items-center justify-content-between">
+        <h4 className="m-0">Manage Flights</h4>
+        <span className="p-input-icon-left">
+          <i className="pi pi-search" />
+          <InputText
+            type="search"
+            value={value || ""}
+            onChange={(e) => onGlobalFilterChange(e)}
+            placeholder="Search..."
+          />
+        </span>
+      </div>
+    );
+  };
+  const header = renderHeader();
+
   const flightDialogFooter = (
     <React.Fragment>
       <Button label="Cancel" icon="pi pi-times" outlined onClick={hideDialog} />
@@ -401,8 +409,9 @@ const Flights = () => {
           rowsPerPageOptions={[5, 10, 25]}
           paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
           currentPageReportTemplate="Showing {first} to {last} of {totalRecords} flights"
-          globalFilter={globalFilter}
           header={header}
+          filters={filters}
+          onFilter={(e) => setFilters(e.filters)}
         >
           <Column selectionMode="multiple" exportable={false}></Column>
 
@@ -422,21 +431,21 @@ const Flights = () => {
             style={{ minWidth: "20rem" }}
           ></Column>
           <Column
-            field="aeroportDepart.name"
+            field="nameAeroportDepart"
             header="Departure Airport"
             sortable
             body={(rowData) => <span>{rowData.aeroportDepart.name}</span>}
             style={{ minWidth: "20rem" }}
           ></Column>
           <Column
-            field="aeroportArrive.name"
+            field="nameAeroportArrive"
             header="Arrival Airport"
             sortable
             body={(rowData) => <span>{rowData.aeroportArrive.name}</span>}
             style={{ minWidth: "20rem" }}
           ></Column>
           <Column
-            field="avionResponse.typeAvionDto.name"
+            field="typeAvion"
             header="Airplane Type"
             sortable
             body={(rowData) => (
@@ -469,7 +478,7 @@ const Flights = () => {
       >
         <div className="field">
           <label htmlFor="heurDepart" className="font-bold">
-            Heure de départ
+            Departure Time
           </label>
           <Calendar
             id="heurDepart"
@@ -489,7 +498,7 @@ const Flights = () => {
         </div>
         <div className="field">
           <label htmlFor="nameAeroportDepart" className="font-bold">
-            Aéroport de départ
+            Departure Airport
           </label>
 
           <Dropdown
@@ -506,7 +515,7 @@ const Flights = () => {
 
         <div className="field">
           <label htmlFor="nameAeroportArrive" className="font-bold">
-            Aéroport d'arrivée
+            Arrival Airport
           </label>
           <Dropdown
             id="nameAeroportArrive"
@@ -521,7 +530,7 @@ const Flights = () => {
         </div>
 
         <div className="field">
-          <label className="mb-3 font-bold">Type d'avion</label>
+          <label className="mb-3 font-bold">Airplane Type</label>
           {airplaneTypeOptions.map((type, index) => (
             <div key={index} className="field-radiobutton col-6">
               <RadioButton
