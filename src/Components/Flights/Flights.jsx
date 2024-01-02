@@ -24,6 +24,9 @@ const Flights = () => {
 
   const [flights, setFlights] = useState([]);
   const [airportOptions, setAirportOptions] = useState([]);
+  const [airportOptionsDeparture, setAirportOptionsDeparture] = useState([]);
+  const [airportOptionsArrival, setAirportOptionsArrival] = useState([]);
+
   const [airplaneTypeOptions, setAirplaneTypeOptions] = useState([]);
   const [flightDialog, setFlightDialog] = useState(false);
   const [deleteFlightDialog, setDeleteFlightDialog] = useState(false);
@@ -63,7 +66,8 @@ const Flights = () => {
       try {
         const response = await axios.get("http://localhost:8080/aeroports");
         const airportsName = response.data.map((airport) => airport.name);
-        setAirportOptions(airportsName);
+        setAirportOptionsDeparture(airportsName);
+        setAirportOptionsArrival(airportsName);
       } catch (error) {
         console.error("Error fetching airports:", error);
       }
@@ -288,6 +292,18 @@ const Flights = () => {
   const onFlightDropdownChange = (selectedOption, name) => {
     const updatedFlight = { ...flight, [name]: selectedOption.value };
     setFlight(updatedFlight);
+
+    if (name === "nameAeroportDepart") {
+      const filteredArrivalOptions = airportOptionsArrival.filter(
+        (airport) => airport !== selectedOption.value
+      );
+      setAirportOptionsArrival(filteredArrivalOptions);
+    } else if (name === "nameAeroportArrive") {
+      const filteredDepartureOptions = airportOptionsDeparture.filter(
+        (airport) => airport !== selectedOption.value
+      );
+      setAirportOptionsDeparture(filteredDepartureOptions);
+    }
   };
 
   const leftToolbarTemplate = () => {
@@ -503,7 +519,7 @@ const Flights = () => {
           <Dropdown
             id="nameAeroportDepart"
             value={flight.nameAeroportDepart}
-            options={airportOptions.map((name) => ({
+            options={airportOptionsDeparture.map((name) => ({
               value: name,
               label: name,
             }))}
@@ -519,7 +535,7 @@ const Flights = () => {
           <Dropdown
             id="nameAeroportArrive"
             value={flight.nameAeroportArrive}
-            options={airportOptions.map((name) => ({
+            options={airportOptionsArrival.map((name) => ({
               value: name,
               label: name,
             }))}
