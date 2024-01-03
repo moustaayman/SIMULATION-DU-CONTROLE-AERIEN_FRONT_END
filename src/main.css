@@ -283,7 +283,7 @@ h1 {
     }
 
     .rsm-marker {
-        transition: transform 2s ease;
+        transition: transform 10s ease;
     }
 
 
