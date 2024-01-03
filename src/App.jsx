@@ -8,13 +8,14 @@ import "primereact/resources/primereact.css";
 import "./Components/Flights/Styles.css";
 import LandingPage from "./Components/Landing Page/LandingPage.jsx";
 import "./main.css";
+import Simulation from "./Components/Simulation/Simulation.jsx";
 const App = () => {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<LandingPage></LandingPage>}></Route>
         <Route path="/flights" element={<Flights></Flights>}></Route>
-        {/* <Route path="/map" element={<Map></Map>}></Route> */}
+        <Route path="/simulation" element={<Simulation></Simulation>}></Route>
       </Routes>
     </BrowserRouter>
   );
