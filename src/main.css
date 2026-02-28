@@ -70,13 +70,14 @@ li {
     font-size: 18px;
     font-weight: bold;
     margin-top: 2.5rem;
-
+    
     a {
         color: var(--whiteColor);
         font-weight: 500;
     }
-
+    
     &:hover {
+        transition: var(--transition);
         background: var(--hoverColor);
     }
 }
